@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custome GraphQL Client</title>
+</head>
+
+<body>
+    <h1>GraphQL Client</h1>
+    <button onclick="fetchAPI()">Get Data</button>
+    <h3 id="resp"> Loading...</h3>
+    <script>
+        const fetchAPI = () => {
+            console.log("START - fetching from API");
+            fetch("http://localhost:9000", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(
+                    {
+                        "operationName": null,
+                        "variables": {},
+                        "query": "{ greeting }"
+                    }
+                ) // body data type must match "Content-Type" header
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("response: " + data.data.greeting);
+                    document.getElementById("resp").innerHTML = data.data.greeting;
+                }).catch(err => {
+                    console.log("error: " + err);
+                });
+        }
+    </script>
+</body>
+
+</html>
