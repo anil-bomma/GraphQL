@@ -6,6 +6,11 @@ const { ApolloServer, gql } = require("apollo-server");
 // client can query servers and ask for greeting
 // schema is like an interface specify only queryName and Type.
 const typeDefs = gql`
+    # schema is default to query. So, from client when query the server we will use the query
+    schema {
+        query: Query
+    }
+
     type Query {
         greeting: String
     }
