@@ -23,16 +23,16 @@ export class CompanyDetail extends Component {
       body: JSON.stringify(
         {
           "query": `
-          query CompanyQuery ($id: ID!){
-            companyWithJobs(id: $id) {
-              name
-              description,
-              jobsWithCompany {
-                id,
-                title
+            query CompanyQuery ($id: ID!){
+              companyWithJobs(id: $id) {
+                name
+                description,
+                jobsWithCompany {
+                  id,
+                  title
+                }
               }
             }
-          }
           `,
           variables: {
             id: `${this.props.match.params.companyId}`
