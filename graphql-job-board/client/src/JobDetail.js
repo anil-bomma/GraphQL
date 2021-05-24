@@ -8,28 +8,34 @@ export class JobDetail extends Component {
     this.state = { job: { company: {} } };
   }
 
-  async getJobs() {
-    let jobs = await fetch("http://localhost:9000/graphql", {
+  async getJob() {
+    let job = await fetch("http://localhost:9000/graphql", {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        "operationName": null,
-        "variables": {},
-        "query": "{ jobs { id title description company {id name description } } }"
+        "query": `{
+          job(id: "${this.props.match.params.jobId}") {
+            title
+            description
+            company {
+              name
+              id
+            }
+          }
+        }
+        `
       })
     });
 
-    jobs = await jobs.json();
-    return jobs.data.jobs;
+    job = await job.json();
+    return job.data.job;
   }
 
   async componentDidMount() {
-    const jobs = await this.getJobs();
-    const { jobId } = this.props.match.params;
-
-    this.setState({ job: jobs.find((job) => job.id === jobId) });
+    const job = await this.getJob();
+    this.setState({ job });
   }
 
   render() {
