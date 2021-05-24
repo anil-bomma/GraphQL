@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { JobList } from './JobList';
+
 // import { companies } from './fake-data';
 
 export class CompanyDetail extends Component {
@@ -22,9 +24,13 @@ export class CompanyDetail extends Component {
         {
           "query": `
           query CompanyQuery ($id: ID!){
-            company(id: $id) {
+            companyWithJobs(id: $id) {
               name
-              description
+              description,
+              jobsWithCompany {
+                id,
+                title
+              }
             }
           }
           `,
@@ -36,7 +42,7 @@ export class CompanyDetail extends Component {
     });
 
     job = await job.json();
-    return job.data.company;
+    return job.data.companyWithJobs;
   }
 
   render() {
@@ -44,11 +50,14 @@ export class CompanyDetail extends Component {
     if (!company) {
       return null;
     }
+
     return (
       <div>
         <h1 className="title">{company.name}</h1>
         <div className="box">{company.description}</div>
-      </div>
+        <h5 className="title">Job List</h5>
+        <JobList jobs={company.jobsWithCompany} />
+        </div>
     );
   }
 }

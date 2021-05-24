@@ -3,7 +3,26 @@ type Query {
     job(id: ID!): Job
     jobs: [Job]
     company(id: ID!): Company
+    companyWithJobs(id: ID!): CompanyWithJobs
 }
+
+type CompanyWithJobs {
+    id: ID!
+    name: String
+    description: String,
+    jobsWithCompany: [Job]
+}
+
+# query CompanyWithJobsQuery ($id: ID!){
+#   companyWithJobs(id: $id) {
+#     name
+#     description,
+#     jobsWithCompany {
+#       id,
+#       title
+#     }
+#   }
+# }
 
 type Company {
     id: ID!
