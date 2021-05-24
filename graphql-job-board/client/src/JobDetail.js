@@ -14,19 +14,26 @@ export class JobDetail extends Component {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        "query": `{
-          job(id: "${this.props.match.params.jobId}") {
-            title
-            description
-            company {
-              name
-              id
+      body: JSON.stringify(
+        {
+          "query": `
+            query JobQuery($id: ID!){
+              job(id: $id) {
+                id
+                title
+                description
+                company {
+                  name
+                  id
+                }
+              }
             }
-          }
-        }
-        `
-      })
+          `,
+          variables: {
+            id: `${this.props.match.params.jobId}`
+          },
+          operationName: "JobQuery"
+        })
     });
 
     job = await job.json();
