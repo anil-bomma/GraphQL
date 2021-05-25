@@ -16,4 +16,18 @@ const Job = {
     company: (job) => db.companies.get(job.companyId)
 }
 
-module.exports = { Query, Job, CompanyWithJobs };
+// defining the reslover for the mutations
+const Mutation = {
+    createJob : (root, args) => {
+        // we destruct the args for the requied key as 
+        // args --> {title, description, company}
+        const id =  db.jobs.create({
+            title: args.title,
+            description: args.description,
+            companyId: args.companyId 
+        });
+        return db.jobs.get(id);
+    }
+}
+
+module.exports = { Query, Job, CompanyWithJobs, Mutation };

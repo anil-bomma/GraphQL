@@ -36,3 +36,8 @@ type Job {
     company: Company
     description: String
 }
+
+# mutations are used for the modifing the data, usually it has argumnet and return type
+type Mutation {
+    createJob(title: String, description:String, companyId: ID) : Job
+}
