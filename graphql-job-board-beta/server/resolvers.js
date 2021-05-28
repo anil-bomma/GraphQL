@@ -27,6 +27,12 @@ const Mutation = {
             companyId: args.companyId 
         });
         return db.jobs.get(id);
+    },
+    createJobSmart : (root, args) => {
+        // we destruct the args for the requied key as 
+        // args --> {title, description, company}
+        const id =  db.jobs.create(args.input);
+        return db.jobs.get(id);
     }
 }
 

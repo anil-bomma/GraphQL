@@ -40,4 +40,12 @@ type Job {
 # mutations are used for the modifing the data, usually it has argumnet and return type
 type Mutation {
     createJob(title: String, description:String, companyId: ID) : Job
+    createJobSmart(input: CreateJobInput) : Job
+}
+
+
+input CreateJobInput {
+    companyId: ID,
+    title: String,
+    description: String
 }

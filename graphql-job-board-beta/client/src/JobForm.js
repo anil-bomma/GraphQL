@@ -11,9 +11,39 @@ export class JobForm extends Component {
     this.setState({[name]: value});
   }
 
-  handleClick(event) {
+  async postJob(jobData) {
+    let job = await fetch("http://localhost:9000/graphql", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "operationName": null,
+        "variables": {"input" : jobData},
+        "query": `
+          mutation createJob($input: CreateJobInput) {
+            createJobSmart(input: $input) {
+              id
+              title
+              company {
+                name
+              }
+            }
+          }
+        `
+      })
+    });
+
+    job = await job.json();
+    return job.data.createJobSmart;
+  }
+
+  async handleClick(event) {
     event.preventDefault();
     console.log('should post a new job:', this.state);
+    let res = await this.postJob({...this.state, companyId: "SJV0-wdOM"});
+    console.log("res", res)
+    this.props.history.push(`/jobs/${res.id}`);
   }
 
   render() {
