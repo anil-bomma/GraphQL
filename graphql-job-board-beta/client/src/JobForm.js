@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { getAccessToken, isLoggedIn } from './auth';
 
 export class JobForm extends Component {
   constructor(props) {
@@ -12,11 +13,15 @@ export class JobForm extends Component {
   }
 
   async postJob(jobData) {
+    const headers = {
+      'Content-Type': 'application/json'
+    };
+    if (isLoggedIn()) {
+      headers['authorization'] = "Bearer " + getAccessToken();
+    }
     let job = await fetch("http://localhost:9000/graphql", {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers,
       body: JSON.stringify({
         "operationName": null,
         "variables": {"input" : jobData},
@@ -41,7 +46,7 @@ export class JobForm extends Component {
   async handleClick(event) {
     event.preventDefault();
     console.log('should post a new job:', this.state);
-    let res = await this.postJob({...this.state, companyId: "SJV0-wdOM"});
+    let res = await this.postJob({...this.state});
     console.log("res", res)
     this.props.history.push(`/jobs/${res.id}`);
   }

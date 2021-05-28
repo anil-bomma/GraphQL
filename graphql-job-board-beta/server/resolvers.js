@@ -28,9 +28,13 @@ const Mutation = {
         });
         return db.jobs.get(id);
     },
-    createJobSmart : (root, args) => {
+    createJobSmart : (root, args, context) => {
+        if (!context.user) {
+            throw new Error("Unauthorized ");
+        }
         // we destruct the args for the requied key as 
         // args --> {title, description, company}
+        args.input["companyId"] = context.user.companyId;
         const id =  db.jobs.create(args.input);
         return db.jobs.get(id);
     }
